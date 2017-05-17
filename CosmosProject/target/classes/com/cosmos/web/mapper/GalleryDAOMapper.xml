@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+          PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cosmos.web.gallery.GalleryDAOInterface">
+	<select id="selectAllList" resultType="com.cosmos.web.gallery.GalleryUploadVO">
+		SELECT g_num,file_name,write_date,m_num 
+		FROM upload_gallery ORDER BY g_num DESC
+	</select>
+	<insert id="insertGalleryUpload" parameterType="com.cosmos.web.gallery.GalleryUploadVO">
+		INSERT INTO upload_gallery VALUES(upload_gallery_sq.nextVal,#{file_name},sysdate,#{m_num})
+	</insert>
+	<delete id="deleteGalleryUpload" parameterType="int">
+		DELETE FROM upload_gallery WHERE g_num=#{g_num}
+	</delete>
+</mapper>

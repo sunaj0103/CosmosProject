@@ -1,0 +1,373 @@
+@CHARSET "UTF-8";
+@font-face {
+	font-family: 'notokrR';
+	font-style: normal;
+    font-weight: 300;
+	src: url('fonts/notokr-regular.eot');
+	src: url('fonts/notokr-regular.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/notokr-regular.woff2') format('woff2'),
+		 url('fonts/notokr-regular.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'notokrB';
+	font-style: normal;
+    font-weight: 700;
+	src: url('fonts/notokr-bold.eot');
+	src: url('fonts/notokr-bold.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/notokr-bold.woff2') format('woff2'),
+		 url('fonts/notokr-bold.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'notokrL';
+	font-style: normal;
+    font-weight: 100;
+	src: url('fonts/notokr-light.eot');
+	src: url('fonts/notokr-light.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/notokr-light.woff2') format('woff2'),
+		 url('fonts/notokr-light.woff') format('woff'); 
+}
+
+html, body {
+	height: 100%;
+}
+
+body {
+	margin: 0px;
+	padding: 0px;
+	width: 100%; 
+	overflow-x: hidden;
+	background-color: #fff;
+	background-image: url('/web/img/Winter_Stars_Rising.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+ul, li {
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none
+}
+
+#menu a {
+	text-decoration: none;
+	color: #232323;
+	font-family: 'notokrB';
+	-webkit-transition: color 0.3s ease;
+	transition: color 0.3s ease;
+}
+
+#menu a:hover {
+	color: #00a0e9;
+}
+
+#menuToggle {
+	display: block;
+	position: absolute;
+	top: 65px;
+	right: 80px;
+	z-index: 51;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#menuToggle input {
+	display: block;
+	width: 40px;
+	height: 32px;
+	position: absolute;
+	top: -7px;
+	left: -5px;
+	cursor: pointer;
+	opacity: 0; /* hide this */
+	z-index: 52; /* and place it over the hamburger */
+	-webkit-touch-callout: none;
+}
+
+#menuToggle span {
+	display: block;
+	width: 33px;
+	height: 4px;
+	margin-bottom: 5px;
+	position: relative;
+	background: #cdcdcd;
+	border-radius: 3px;
+	z-index: 51;
+	-webkit-transform-origin: 4px 0px;
+	transform-origin: 4px 0px;
+	-webkit-transition: background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0), opacity 0.55s ease, 
+						-webkit-transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+	transition: background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0), opacity 0.55s ease, 
+				-webkit-transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+	transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0), 
+				background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0), opacity 0.55s ease;
+	transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0), 
+				background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0), opacity 0.55s ease,
+				-webkit-transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+}
+
+#menuToggle span:first-child {
+	-webkit-transform-origin: 0% 0%;
+	transform-origin: 0% 0%;
+}
+
+#menuToggle span:nth-last-child(2) {
+	-webkit-transform-origin: 0% 100%;
+	transform-origin: 0% 100%;
+}
+
+#menuToggle input:checked ~ span {
+	opacity: 1;
+	-webkit-transform: rotate(45deg) translate(-2px, -1px);
+	transform: rotate(45deg) translate(-2px, -1px);
+	background: #232323;
+}
+
+#menuToggle input:checked ~ span:nth-last-child(3) {
+	opacity: 0;
+	-webkit-transform: rotate(0deg) scale(0.2, 0.2);
+	transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+#menuToggle input:checked ~ span:nth-last-child(2) {
+	opacity: 1;
+	-webkit-transform: rotate(-45deg) translate(0, -1px);
+	transform: rotate(-45deg) translate(0, -1px);
+}
+
+#menu {
+	position: absolute;
+	width: 300px;
+	margin: -100px 0 0 0;
+	padding: 50px;
+	padding-top: 125px;
+	padding-bottom: 125px;
+	right: -100px;
+	background: #ededed;
+	font-family: 'notokrR';
+	list-style-type: none;
+	-webkit-font-smoothing: antialiased;
+	/* to stop flickering of text in safari */
+	-webkit-transform-origin: 0% 0%;
+	transform-origin: 0% 0%;
+	-webkit-transform: translate(100%, 0);
+	transform: translate(100%, 0);
+	-webkit-transition: -webkit-transform 0.5s
+		cubic-bezier(0.77, 0.2, 0.05, 1.0);
+	transition: -webkit-transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+	transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+	transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0),
+				-webkit-transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+}
+
+#menu li {
+	padding: 10px 0;
+	font-size: 22px;
+}
+
+#menuToggle input:checked ~ ul {
+	-webkit-transform: scale(1.0, 1.0);
+	transform: scale(1.0, 1.0);
+	opacity: 1;
+}
+
+#loginDiv {
+	width: 100%;
+	height: 40px;
+	background-color: #fff;
+	color: #000;
+	text-align: center;
+	z-index: 15;
+}
+
+#loginUl {
+	height: 30px;
+	padding-top: 10px;
+	margin-right: 70px;
+}
+
+#loginUl li {
+	float: right;
+	line-height: 30px;
+	font-size: 0.8em;
+	margin-right: 10px;
+	text-align: left;
+}
+
+.loginTop {
+	text-decoration: none;
+	color: #222;
+	font-size: 16px;
+	font-family: 'notokrR';
+}
+
+a.loginLink {
+	border: 1px solid #bbc3c3;
+	padding: 2px 5px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+
+a.loginTop:visited {
+	color: #222;
+}
+
+a.loginTop:hover {
+	color: #00a0e9;
+}
+
+.userName {
+	color: #222;
+	font-size: 17px;
+	font-family: 'notokrR';
+}
+
+#menuDiv {
+	width: 100%;
+	height: 70px;
+	background-color: #809bb6;
+	z-index: 10;
+}
+
+#logoDiv {
+	height: 70px;
+	line-height: 70px;
+	margin-left: 70px;
+}
+
+#contentDiv {
+	position: absolute;
+	bottom: 120px;
+	width: 100%;
+	height: 230px;
+	z-index: 20
+}
+
+#btnDiv {
+	width: 80%;
+	height: 220px;
+	margin: 0 auto;
+}
+
+#btnDiv>div {
+	float: left;
+	width: 25%;
+	height: 80%;
+	color: #fff;
+	z-index: 30;
+	text-align: center;
+	margin-top: 50px;
+}
+
+.circle {
+	width: 80px;
+	height: 80px;
+	line-height: 80px;
+	border-radius: 50%;
+	text-decoration: none;
+	text-transform: uppercase;
+	position: relative;
+	text-align: center;
+	font-family: 'notokrR';
+	color: #00c7ec;
+	display: inline-block;
+	font-size: 2.4em;
+	background: rgba(255, 255, 255, 0.1);
+	border: 1px solid #00c7ec;
+	box-shadow: 0 0 0 0 transparent;
+	-webkit-transition: all 0.2s ease-in;
+	-moz-transition: all 0.2s ease-in;
+	transition: all 0.2s ease-in;
+}
+
+.circle:hover {
+	color: #fff;
+	background-color: #00c7ec;
+	box-shadow: 0 0 30px 0 rgba(0, 199, 236, 0.5);
+	-webkit-transition: all 0.2s ease-out;
+	-moz-transition: all 0.2s ease-out;
+	transition: all 0.2s ease-out;
+}
+
+.circle:hover:before {
+	-webkit-animation: shine 0.5s 0s linear;
+	-moz-animation: shine 0.5s 0s linear;
+	animation: shine 0.5s 0s linear;
+}
+
+.circle:active {
+	box-shadow: 0 0 0 0 transparent;
+	-webkit-transition: box-shadow 0.2s ease-in;
+	-moz-transition: box-shadow 0.2s ease-in;
+	transition: box-shadow 0.2s ease-in;
+}
+
+.circle:before {
+	content: '';
+	display: block;
+	width: 0px;
+	height: 86%;
+	position: absolute;
+	top: 7%;
+	left: 0%;
+	opacity: 0;
+	background: #fff;
+	box-shadow: 0 0 15px 3px white;
+	-webkit-transform: skewX(-20deg);
+	-moz-transform: skewX(-20deg);
+	-ms-transform: skewX(-20deg);
+	-o-transform: skewX(-20deg);
+	transform: skewX(-20deg);
+}
+
+@-webkit-keyframes shine {
+	from {opacity: 0; left: 0%;}
+	50% {opacity: 1;}
+	to {opacity: 0; left: 100%;}
+}
+@-moz-keyframes shine {
+	from {opacity: 0; left: 0%;}
+	50% {opacity: 1;}
+	to {opacity: 0; left: 100%;}
+}
+@keyframes shine {
+	from {opacity: 0; left: 0%;}
+	50% {opacity: 1;}
+	to {opacity: 0; left: 100%;}
+}
+
+.cirTxt {
+	font-size: 1.2em;
+	padding-top: 20px
+}
+
+#footer {
+	position: fixed;
+	bottom: 30px;
+	z-index: 20;
+	width: 100%;
+	height: 70px;
+	background-color: #222;
+}
+
+#footerTxt {
+	margin-left: 70px;
+	padding: 15px 0px;
+	color: #ADD8E6;
+	font-family: 'notokrR';
+	font-size: 0.8em;
+}
+
+#copyright {
+	position: fixed;
+	right: 70px;
+	bottom: 7px;
+	color: #fff;
+	font-family: 'notokrR';
+	font-size: 0.8em;
+}

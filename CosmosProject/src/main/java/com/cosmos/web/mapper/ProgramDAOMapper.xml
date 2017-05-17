@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+          PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cosmos.web.program.ProgramDAOInterface">
+	<insert id="insertProgram" parameterType="com.cosmos.web.program.ProgramVO">
+		INSERT INTO program VALUES(program_sq.nextVal,#{title},#{description},#{recommend},#{total_num_of_applicants},#{child},#{teenager},#{adult},#{discount_min},#{discount_rate},sysdate)
+	</insert>
+	<select id="selectAllProgram" resultType="com.cosmos.web.program.ProgramVO">
+	 	SELECT p_num,title,description,recommend,total_num_of_applicants,child,teenager,adult,discount_min,discount_rate 
+	 	FROM program ORDER BY p_num DESC
+	</select>
+	<select id="selectProgram" resultType="com.cosmos.web.program.ProgramVO">
+	 	SELECT p_num,title,description,recommend,total_num_of_applicants,child,teenager,adult,discount_min,discount_rate,write_date 
+	 	FROM program WHERE p_num=#{p_num}
+	</select>
+	<update id="updateProgram" parameterType="com.cosmos.web.program.ProgramVO">
+		UPDATE program SET title=#{title},description=#{description},recommend=#{recommend},total_num_of_applicants=#{total_num_of_applicants},child=#{child},teenager=#{teenager},adult=#{adult},discount_min=#{discount_min},discount_rate=#{discount_rate} 
+		WHERE p_num=#{p_num}
+	</update>
+	<select id="countProgram" resultType="int">
+		SELECT COUNT(pd_num) FROM program_date WHERE p_num=#{p_num}
+	</select>
+	<delete id="deleteProgram" parameterType="int">
+		DELETE FROM program WHERE p_num=#{p_num}
+	</delete>
+	
+	<insert id="insertProgramTime" parameterType="com.cosmos.web.program.ProgramDateVO">
+		INSERT INTO program_date VALUES(program_date_sq.nextVal,#{start_date},#{start_time},#{end_time},#{status},0,'N',sysdate,#{p_num})
+	</insert>
+	<select id="programTimeCount" resultType="int">
+		SELECT COUNT(pd_num) FROM program_date
+	</select>
+	<select id="selectAllProgramTime" parameterType="com.cosmos.web.notice.NoticeBoardPagingVO" resultType="com.cosmos.web.program.ProgramDateJoinVO">
+		<![CDATA[
+		SELECT *
+		FROM (SELECT * 
+			FROM (SELECT pd_num,start_date,start_time,end_time,status,num_of_applicants,canceled,pd.write_date,
+				p.p_num,title,description,recommend,child,teenager,adult,discount_min,discount_rate 
+				FROM program_date pd, program p WHERE pd.p_num=p.p_num ORDER BY pd_num DESC)
+			WHERE ROWNUM<=#{rownumEnd} ORDER BY pd_num ASC)			
+		WHERE ROWNUM<=#{lastPageRecord} ORDER BY pd_num DESC
+		]]>
+	</select>
+	<select id="selectProgramTime" resultType="com.cosmos.web.program.ProgramDateJoinVO">
+		SELECT pd_num,start_date,start_time,end_time,status,num_of_applicants,canceled,pd.write_date,
+		p.p_num,title,description,recommend,total_num_of_applicants,child,teenager,adult,discount_min,discount_rate 
+		FROM program_date pd, program p WHERE pd.p_num=p.p_num AND pd_num=#{pd_num}
+	</select>
+	<update id="updateProgramTime" parameterType="com.cosmos.web.program.ProgramDateVO">
+		UPDATE program_date SET start_date=#{start_date},start_time=#{start_time},end_time=#{end_time},status=#{status},canceled=#{canceled} 
+		WHERE pd_num=#{pd_num}
+	</update>
+	<update id="deleteProgramTime" parameterType="int">
+		UPDATE program_date SET status='N',canceled='Y' 
+		WHERE pd_num=#{pd_num}
+	</update>
+	
+	<select id="selectProgramTimes" resultType="com.cosmos.web.program.ProgramDateVO">
+		SELECT pd_num,start_date,start_time,end_time,status,num_of_applicants,canceled 
+		FROM program_date WHERE p_num=#{p_num} AND status='Y' AND canceled='N' 
+		ORDER BY start_date DESC, start_time DESC		
+	</select>
+	<insert id="insertReservation" parameterType="com.cosmos.web.program.ReservationVO">
+		INSERT INTO reservation VALUES(reservation_sq.nextVal,#{child_tot},#{teenager_tot},#{adult_tot},
+		#{contact_person},#{tel},#{payment},#{account_holder},#{bank_name},#{account_number},
+		#{total_payment},#{discount},#{final_payment},'1',sysdate,'N',#{p_num},#{pd_num},#{m_num})
+	</insert>
+	<update id="applicantsCount" parameterType="int">
+		UPDATE program_date SET num_of_applicants=num_of_applicants+#{totalNum} 
+		WHERE pd_num=#{pd_num}
+	</update>
+	
+	<select id="statisticsCount" resultType="com.cosmos.web.admin.StatisticsVO">
+		SELECT r.p_num, p.title,SUM(child_tot) child_tot,SUM(teenager_tot) teenager_tot,SUM(adult_tot) adult_tot
+		FROM reservation r, program p 
+		WHERE r.p_num=p.p_num
+		Group by r.p_num, p.title
+	</select>
+</mapper>

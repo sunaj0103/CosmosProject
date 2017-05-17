@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+          PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cosmos.web.member.MembersDAOInterface">
+	<insert id="insertSignUp" parameterType="com.cosmos.web.member.MembersVO">
+		INSERT INTO members VALUES(members_sq.nextVal,#{id},#{password},#{name},#{birth},
+		#{gender},#{phone},#{email},#{sms_reception},'C',sysdate,sysdate,'N')
+	</insert>
+	<select id="loginCheck" resultType="com.cosmos.web.member.MembersVO">
+		SELECT m_num,id,password,name,birth,gender,phone,email,sms_reception,is_manager    
+		FROM members WHERE id=#{id} AND password=#{password} and withdrawal='N'
+	</select>
+	<select id="selectMember" resultType="com.cosmos.web.member.MembersVO">
+		SELECT m_num,id,password,name,birth,gender,phone,email,sms_reception,is_manager    
+		FROM members WHERE m_num=#{m_num} AND withdrawal='N'
+	</select>
+	<select id="idCheck" resultType="int">
+		SELECT COUNT(m_num)	FROM members WHERE id=#{id}
+	</select>
+	<select id="idSearch" resultType="com.cosmos.web.member.MembersVO">
+		SELECT m_num,id,password,name,birth,gender,phone,email 
+		FROM members WHERE name=#{name} AND phone=#{phone} and withdrawal='N'
+	</select>
+	<select id="pwSearch" resultType="com.cosmos.web.member.MembersVO">
+		SELECT m_num,id,password,name,birth,gender,phone,email 
+		FROM members WHERE id=#{id} AND name=#{name} AND email=#{email} and withdrawal='N'
+	</select>
+	
+	<select id="selectAllReservation" parameterType="int" resultType="com.cosmos.web.program.ReservationJoinVO">
+		SELECT title,description,recommend,child,teenager,adult,discount_min,discount_rate,r_num,child_tot,teenager_tot,adult_tot,contact_person,tel,payment,account_holder,bank_name,
+		account_number,total_payment,discount,final_payment,reservation_date,r.canceled,r.p_num,r.pd_num,r.m_num,start_date,start_time,end_time 
+		FROM  program_date pd, program p, reservation r WHERE r.p_num=p.p_num AND r.pd_num=pd.pd_num AND r.m_num=#{m_num}
+		ORDER BY r.r_num DESC
+	</select>
+	<select id="selectMyReservation" parameterType="int" resultType="com.cosmos.web.program.ReservationJoinVO">
+		SELECT title,description,recommend,child,teenager,adult,discount_min,discount_rate,r_num,child_tot,teenager_tot,adult_tot,contact_person,tel,payment,account_holder,bank_name,
+		account_number,total_payment,discount,final_payment,reservation_date,r.canceled,r.p_num,r.pd_num,r.m_num,start_date,start_time,end_time 
+		FROM  program_date pd, program p, reservation r WHERE r.p_num=p.p_num AND r.pd_num=pd.pd_num AND r.r_num=#{r_num}
+		ORDER BY r.r_num DESC
+	</select>
+	<update id="updateReservation" parameterType="com.cosmos.web.program.ProgramVO">
+		UPDATE reservation SET contact_person=#{contact_person},tel=#{tel},account_holder=#{account_holder},bank_name=#{bank_name},account_number=#{account_number} 
+		WHERE r_num=#{r_num}
+	</update>
+	<update id="updateCancel" parameterType="int">
+		UPDATE reservation SET canceled='Y' WHERE r_num=#{r_num}
+	</update>
+	<update id="applicantsReCount" parameterType="int">
+		UPDATE program_date SET num_of_applicants=num_of_applicants-#{totalNum} 
+		WHERE pd_num=#{pd_num}
+	</update>
+	<update id="updateMemberInfo" parameterType="com.cosmos.web.member.MembersVO">
+		UPDATE members SET password=#{password},phone=#{phone},email=#{email},sms_reception=#{sms_reception},modified_date=sysdate 
+		WHERE m_num=#{m_num}
+	</update>
+	<update id="updateWithdrawal">
+		UPDATE members SET withdrawal='Y',modified_date=sysdate 
+		WHERE m_num=#{m_num}
+	</update>
+	
+	<select id="selectAllMembers" resultType="com.cosmos.web.member.MembersVO">
+		SELECT m_num,id,name,birth,gender,phone,email,sms_reception   
+		FROM members WHERE is_manager='C' AND withdrawal='N'
+	</select>
+	<select id="selectAllReservList" parameterType="int" resultType="com.cosmos.web.program.ReservationJoinVO">
+		SELECT title,discount_rate,r_num,child_tot,teenager_tot,adult_tot,contact_person,tel,payment,account_holder,bank_name,
+		account_number,discount,final_payment,r.canceled,r.p_num,r.pd_num,r.m_num,start_date,start_time,end_time,id,name  
+		FROM  program_date pd, program p, reservation r, members m 
+		WHERE r.p_num=p.p_num AND r.pd_num=pd.pd_num AND r.m_num=m.m_num AND r.pd_num=#{pd_num}
+	</select>
+	<update id="updateReservCancel" parameterType="int">
+		UPDATE reservation SET canceled='Y' 
+		WHERE r_num=#{r_num}
+	</update>
+</mapper>

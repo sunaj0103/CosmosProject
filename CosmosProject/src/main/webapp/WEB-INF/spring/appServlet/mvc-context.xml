@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- Interceptor 처리 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/admin"/>
+			<mvc:mapping path="/admin/*"/>
+			<mvc:mapping path="/member/myPage"/>
+			<mvc:mapping path="/member/myPageInfo"/>
+			<mvc:mapping path="/member/myPageInfoEdit"/>
+			<mvc:mapping path="/member/myPageInfoWithdrawal"/>			
+			<mvc:mapping path="/member/reservView"/>
+			<mvc:mapping path="/member/reservCancel"/>
+			<mvc:mapping path="/program/programView"/>
+			<mvc:mapping path="/program/programReservation"/>
+			<mvc:mapping path="/program/programReservationOk"/>			
+			<mvc:mapping path="/gallery/galleryUpload"/>
+			<mvc:mapping path="/gallery/galleryUploadOk"/>
+			<mvc:mapping path="/gallery/galleryDel"/>
+			<mvc:mapping path="/gallery/galleryDelOk"/>			
+			<bean class="com.cosmos.web.LoginInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+</beans>

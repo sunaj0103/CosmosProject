@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+          PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cosmos.web.notice.NoticeBoardDAOInterface">
+	<insert id="insertNoticeBoard" parameterType="com.cosmos.web.notice.NoticeBoardVO">
+		INSERT INTO notice_board VALUES(notice_board_sq.nextVal,#{subject},#{content},0,#{notice},sysdate,sysdate,#{m_num})
+	</insert>
+	<select id="selectNoticeList" resultType="com.cosmos.web.notice.NoticeBoardVO">
+		SELECT n_num,n.subject,n.content,n.hit,n.notice,n.write_date,n.modified_date,n.m_num,m.name 
+		FROM notice_board n, members m WHERE n.m_num=m.m_num AND notice='Y' 
+		ORDER BY n_num DESC
+	</select>
+	<select id="selectAllList" parameterType="com.cosmos.web.notice.NoticeBoardPagingVO" resultType="com.cosmos.web.notice.NoticeBoardVO">
+		<![CDATA[
+		SELECT * 
+		FROM (SELECT * 
+			FROM (SELECT n_num,n.subject,n.content,n.hit,n.notice,n.write_date,n.modified_date,n.m_num,m.name 
+				FROM notice_board n, members m WHERE n.m_num=m.m_num ORDER BY n_num DESC) 
+			WHERE ROWNUM<=#{rownumEnd} ORDER BY n_num ASC)			
+		WHERE ROWNUM<=#{lastPageRecord} ORDER BY n_num DESC
+		]]>
+	</select>
+	<select id="noticeCount" resultType="int">
+		SELECT COUNT(n_num) FROM notice_board WHERE notice='Y'
+	</select>
+	<select id="recordCount" resultType="int">
+		SELECT COUNT(n_num) FROM notice_board
+	</select>
+	<select id="selectNotice" resultType="com.cosmos.web.notice.NoticeBoardVO">
+		SELECT n_num,n.subject,n.content,n.hit,n.notice,n.write_date,n.modified_date,n.m_num,m.name 
+		FROM notice_board n, members m WHERE n.m_num=m.m_num AND n_num=#{n_num}
+	</select>
+	<update id="updateNotice" parameterType="com.cosmos.web.notice.NoticeBoardVO">
+		UPDATE notice_board SET subject=#{subject},content=#{content},notice=#{notice},modified_date=sysdate 
+		WHERE n_num=#{n_num}
+	</update>
+	<update id="noticeHitCount" parameterType="int">
+		UPDATE notice_board SET hit=hit+1 WHERE n_num=#{n_num}
+	</update>
+	<delete id="deleteNotice" parameterType="int">
+		DELETE FROM notice_board WHERE n_num=#{n_num}
+	</delete>
+</mapper>
